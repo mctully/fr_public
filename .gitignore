@@ -1,0 +1,7 @@
+# ctags
+tags
+# .DS_Store is a mac os file
+.DS_Store
+# vim swap files
+*.swp
+*.swo

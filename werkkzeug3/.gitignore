@@ -17,3 +17,7 @@ backup/
 *.sfxcache
 cubehorde_shader.?pp
 werkkzeug.config
+# xcode files
+build
+*.pbxuser
+*.mode1v3
