@@ -28,14 +28,30 @@
 
 #define sPLAT_PC      1
 #define sPLAT_PDA     2
+#define sPLAT_MAC			3
 
 #if _WIN32_WCE
 #define sPLATFORM     sPLAT_PDA
 #include "Cmnintrin.h"
+#elif __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_IPHONE || TARGET_OS_IPHONE_SIMULATOR
+// not yet :)
+#error "ios not supported"
+#elif TARGET_OS_MAC
+#define sPLATFORM			sPLAT_MAC
+#else
+#error "unknown apple platform"
+#endif
 #else
 #define sPLATFORM     sPLAT_PC
 #endif
 
+#if __GNUC__
+// MT: might be nicer to change these to sINLINE and sCDECL as done in altona/types.hpp
+#define __forceinline __attribute__((always_inline))
+#define __cdecl
+#endif
 
 /****************************************************************************/
 
@@ -81,7 +97,7 @@
 /****************************************************************************/
 
 //#if _DEBUG                          // fix memory management
-#if !sINTRO && sPLATFORM!=sPLAT_PDA
+#if !sINTRO && sPLATFORM==sPLAT_PC
 #define _MFC_OVERRIDES_NEW
 void *  __cdecl operator new(unsigned int);
 void *  __cdecl operator new(unsigned int,const char *,int);
@@ -90,7 +106,11 @@ inline void __cdecl operator delete(void *p, const char *, int s) { ::operator d
 #endif
 //#endif
 
+#if sPLATFORM==sPLAT_PC
 #define sNORETURN __declspec(noreturn)  // use this for dead end funtions
+#else
+#define sNORETURN
+#endif
 
 /****************************************************************************/
 /***                                                                      ***/
@@ -212,15 +232,27 @@ class sBitmap;
 typedef unsigned char             sU8;      // for packed arrays
 typedef unsigned short            sU16;     // for packed arrays
 typedef unsigned int              sU32;     // for packed arrays and bitfields
+#if sPLATFORM==sPLAT_MAC
+typedef unsigned long long				sU64;
+#else
 typedef unsigned __int64          sU64;     // use as needed
+#endif
 typedef signed char               sS8;      // for packed arrays
 typedef short                     sS16;     // for packed arrays
 typedef int                       sS32;     // for packed arrays
+#if sPLATFORM==sPLAT_MAC
+typedef signed long long					sS64;
+#else
 typedef signed __int64            sS64;     // use as needed
+#endif
 typedef float                     sF32;     // basic floatingpoint
 typedef double                    sF64;     // use as needed
 typedef int                       sInt;     // use this most!
+#if sPLATFORM==sPLAT_MAC
+typedef ptrdiff_t									sDInt;    // type for pointer diff
+#else
 typedef int __w64                 sDInt;    // type for pointer diff
+#endif
 #if sUNICODE
 typedef wchar_t                   sChar;    // type for strings
 #else
@@ -298,6 +330,9 @@ __forceinline sF32 sFade(sF32 a,sF32 b,sF32 fade)												{return a+(b-a)*fad
 
 // integer
 
+#if sPLATFORM==sPLAT_MAC
+#include <stdlib.h>
+#else
 typedef unsigned int size_t;
 
 extern "C"
@@ -308,6 +343,7 @@ extern "C"
   int __cdecl memcmp( const void *buf1, const void *buf2, size_t count );
   //size_t __cdecl strlen( const char *string );
 }
+#endif
 
 #pragma intrinsic (abs)                                       // int intrinsic
 #pragma intrinsic (memset,memcpy,memcmp,strlen)               // memory intrinsic
@@ -328,6 +364,9 @@ __forceinline sInt sGetStringLen(const sChar *s)                { sInt i;for(i=0
 
 #if !sMOBILE
 
+#if sPLATFORM==sPLAT_MAC
+#include <math.h>
+#else
 extern "C"
 {
 
@@ -350,6 +389,7 @@ extern "C"
   double __cdecl sinh(double);
   double __cdecl tanh(double);
 }
+#endif
 
 #pragma intrinsic (atan,atan2,cos,exp,log,log10,sin,sqrt,tan,fabs) // true intrinsic
 #pragma intrinsic (acos,asin,cosh,fmod,pow,sinh,tanh)         // fake intrinsic
@@ -396,7 +436,7 @@ sInt sQuadraticRoots(const sF32 *coeffs,sF32 *roots);
 /***                                                                      ***/
 /****************************************************************************/
 
-#if !sMOBILE
+#if !sMOBILE && sPLATFORM==sPLAT_PC
 
 #pragma warning (disable : 4035) 
 
@@ -563,6 +603,10 @@ __forceinline sInt sDivShift30(sInt var_a,sInt var_b)
 {
   return (sS32)( (((sS64)var_a)<<30)/((sS64)var_b) );
 }
+
+#if !sMOBILE
+sBool sNormalFloat(sF32 value);
+#endif
 
 #endif
 
@@ -1700,7 +1744,7 @@ template <class Type> class sAutoPtr        // automatically delete ptr when goi
 public:
   sAutoPtr()                                { Ptr = 0; }
   sAutoPtr(Type *x) : Ptr(x)                {}
-  ~sAutoPtr()                               { delete Ptr }
+  ~sAutoPtr()                               { delete Ptr; }
   sAutoPtr(const sAutoPtr &x) : Ptr(x)      { x=0; }
   sAutoPtr & operator= (const sAutoPtr &x)  { delete Ptr; Ptr=x; x=0; }
 
@@ -1710,17 +1754,17 @@ public:
 template <class Type> class sArray2 : public sArray<Type> // add support for sFORALL() and constructor/destructor to sArray 
 {
 public:
-  sArray2()                                 { Init(); }
-  ~sArray2()                                { Exit(); }
-  sArray2(const sArray2 &x)                 { Init(); Copy(x); }
+  sArray2()                                 { this->Init(); }
+  ~sArray2()                                { this->Exit(); }
+  sArray2(const sArray2 &x)                 { this->Init(); Copy(x); }
   sArray2 & operator= (const sArray2 &x)    { Copy(x); }
   Type *Add()                               { return sArray<Type>::Add(); }
   void Add(const Type &x)                   { *sArray<Type>::Add()=x; }
-  sInt GetCount() const                     { return Count; }
-  Type *GetFOR(sInt i)                      { return &Array[i]; }
-  const Type *GetFOR(sInt i) const          { return &Array[i]; }
-  void Swap(sInt i,sInt j)                  { sSwap(Array[i],Array[j]); }
-  void Clear()                              { Count = 0; }
+  sInt GetCount() const                     { return this->Count; }
+  Type *GetFOR(sInt i)                      { return &this->Array[i]; }
+  const Type *GetFOR(sInt i) const          { return &this->Array[i]; }
+  void Swap(sInt i,sInt j)                  { sSwap(this->Array[i],this->Array[j]); }
+  void Clear()                              { this->Count = 0; }
 };
 
 template <class Type> class sAutoArray       // Array of pointers, deleted when array gets deleted
@@ -1950,7 +1994,7 @@ public:
 /***                                                                      ***/
 /****************************************************************************/
 
-#if !sMOBILE
+#if !sMOBILE && sPLATFORM!=sPLAT_MAC
 class sTickTimer
 {
   sU64 Total;
