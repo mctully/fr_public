@@ -7,31 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
+		4D2816A815742AB700CC7B46 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D2816721574261800CC7B46 /* SDL.framework */; };
+		4D2816A915742ABF00CC7B46 /* _start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D281625157424F700CC7B46 /* _start.cpp */; };
+		4D2816AA15742AC000CC7B46 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; };
+		4DF30AC615855B31001E754D /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF30ABA15855B15001E754D /* SDLMain.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		8DD76F690486A84900D96B5E /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		4D2815CD1572EDB600CC7B46 /* example_cube */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = example_cube; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D281625157424F700CC7B46 /* _start.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _start.cpp; path = ../osx/_start.cpp; sourceTree = SOURCE_ROOT; };
+		4D2816721574261800CC7B46 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
+		4D2816A215742AAE00CC7B46 /* app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = app.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D2816A415742AAE00CC7B46 /* app-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "app-Info.plist"; sourceTree = "<group>"; };
+		4DF30AB915855B15001E754D /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
+		4DF30ABA15855B15001E754D /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8DD76F660486A84900D96B5E /* Frameworks */ = {
+		4D2816A015742AAE00CC7B46 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D2816A815742AB700CC7B46 /* SDL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,9 +38,11 @@
 		08FB7794FE84155DC02AAC07 /* example_cube */ = {
 			isa = PBXGroup;
 			children = (
+				4D2816741574261E00CC7B46 /* Frameworks */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				C6859E8C029090F304C91782 /* Documentation */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
+				4D2816A415742AAE00CC7B46 /* app-Info.plist */,
 			);
 			name = example_cube;
 			sourceTree = "<group>";
@@ -51,6 +50,9 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4DF30AB915855B15001E754D /* SDLMain.h */,
+				4DF30ABA15855B15001E754D /* SDLMain.m */,
+				4D281625157424F700CC7B46 /* _start.cpp */,
 				08FB7796FE84155DC02AAC07 /* main.cpp */,
 			);
 			name = Source;
@@ -59,9 +61,17 @@
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4D2815CD1572EDB600CC7B46 /* example_cube */,
+				4D2816A215742AAE00CC7B46 /* app.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		4D2816741574261E00CC7B46 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4D2816721574261800CC7B46 /* SDL.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		C6859E8C029090F304C91782 /* Documentation */ = {
@@ -74,23 +84,22 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8DD76F620486A84900D96B5E /* example_cube */ = {
+		4D2816A115742AAE00CC7B46 /* app */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "example_cube" */;
+			buildConfigurationList = 4D2816A715742AAE00CC7B46 /* Build configuration list for PBXNativeTarget "app" */;
 			buildPhases = (
-				8DD76F640486A84900D96B5E /* Sources */,
-				8DD76F660486A84900D96B5E /* Frameworks */,
-				8DD76F690486A84900D96B5E /* CopyFiles */,
+				4D28169E15742AAE00CC7B46 /* Resources */,
+				4D28169F15742AAE00CC7B46 /* Sources */,
+				4D2816A015742AAE00CC7B46 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = example_cube;
-			productInstallPath = "$(HOME)/bin";
-			productName = example_cube;
-			productReference = 4D2815CD1572EDB600CC7B46 /* example_cube */;
-			productType = "com.apple.product-type.tool";
+			name = app;
+			productName = app;
+			productReference = 4D2816A215742AAE00CC7B46 /* app.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -111,48 +120,35 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8DD76F620486A84900D96B5E /* example_cube */,
+				4D2816A115742AAE00CC7B46 /* app */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		4D28169E15742AAE00CC7B46 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		8DD76F640486A84900D96B5E /* Sources */ = {
+		4D28169F15742AAE00CC7B46 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
+				4D2816A915742ABF00CC7B46 /* _start.cpp in Sources */,
+				4D2816AA15742AC000CC7B46 /* main.cpp in Sources */,
+				4DF30AC615855B31001E754D /* SDLMain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1DEB923208733DC60010E9CD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				INSTALL_PATH = /usr/local/bin;
-				PRODUCT_NAME = example_cube;
-			};
-			name = Debug;
-		};
-		1DEB923308733DC60010E9CD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/bin;
-				PRODUCT_NAME = example_cube;
-			};
-			name = Release;
-		};
 		1DEB923608733DC60010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -164,7 +160,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = "";
 				USER_HEADER_SEARCH_PATHS = "../materials/ ../";
 				VALID_ARCHS = i386;
 			};
@@ -185,23 +181,73 @@
 			};
 			name = Release;
 		};
+		4D2816A515742AAE00CC7B46 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "app-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SDL,
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = app;
+			};
+			name = Debug;
+		};
+		4D2816A615742AAE00CC7B46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "app-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "example_cube" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1DEB923208733DC60010E9CD /* Debug */,
-				1DEB923308733DC60010E9CD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "example_cube" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB923608733DC60010E9CD /* Debug */,
 				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4D2816A715742AAE00CC7B46 /* Build configuration list for PBXNativeTarget "app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4D2816A515742AAE00CC7B46 /* Debug */,
+				4D2816A615742AAE00CC7B46 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

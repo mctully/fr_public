@@ -6,12 +6,20 @@
 #include "_startdx.hpp"
 #include "material11.hpp"
 
+#if sPLATFORM==sPLAT_MAC
+#include <stdio.h>			// give me printf!
+#define MAC 1
+#endif
+
+#define MACTODO		printf("TODO %s %s:%d\n",__PRETTY_FUNCTION__,__FILE__,__LINE__)
+
 /****************************************************************************/
 /***                                                                      ***/
 /***   Class for the example                                              ***/
 /***                                                                      ***/
 /****************************************************************************/
 
+#if !MAC
 class MyApp_ : public sObject
 {
   sF32 Time;
@@ -28,6 +36,7 @@ public:
 };
 
 MyApp_ *MyApp;
+#endif
 
 /****************************************************************************/
 /***                                                                      ***/
@@ -37,6 +46,7 @@ MyApp_ *MyApp;
 
 sBool sAppHandler(sInt code,sDInt value)
 {
+#if !MAC
   switch(code)
   {
   case sAPPCODE_CONFIG:
@@ -72,7 +82,12 @@ sBool sAppHandler(sInt code,sDInt value)
     return sFALSE;
   }
   return sTRUE;
+#else
+	return sFALSE;
+#endif
 }
+
+#if !MAC
 
 /****************************************************************************/
 /***                                                                      ***/
@@ -82,6 +97,8 @@ sBool sAppHandler(sInt code,sDInt value)
 
 MyApp_::MyApp_()
 {
+	MACTODO;
+#if 0
   sU16 *bm;
   sInt i;
   sInt ok;
@@ -113,15 +130,19 @@ MyApp_::MyApp_()
   // create (dynamic) geometry handle
 
   GeoHandle = sSystem->GeoAdd(sFVF_STANDARD,sGEO_TRI|sGEO_IND32B);
+#endif
 }
 
 /****************************************************************************/
 
 MyApp_::~MyApp_()
 {
+	MACTODO;
+#if 0
   sSystem->GeoRem(GeoHandle);
   sRelease(Mtrl);
   sSystem->RemTexture(Texture);
+#endif
 }
 
 /****************************************************************************/
@@ -134,21 +155,29 @@ void MyApp_::Tag()
 
 void MyApp_::OnFrame()
 {
+	MACTODO;
+#if 0
   Time = sSystem->GetTime()*0.001f;
+#endif
 }
 
 /****************************************************************************/
 
 void MyApp_::OnKey(sU32 key)
 {
+	MACTODO;
+#if 0
   if((key&0x8001ffff)==sKEY_ESCAPE)
     sSystem->Exit();
+#endif
 }
 
 /****************************************************************************/
 
 void MyApp_::OnPaint()
 {
+	MACTODO;
+#if 0
   sVertexStandard *vp;
   sInt *ip;
   sInt i,j,s0,s1;
@@ -213,8 +242,10 @@ void MyApp_::OnPaint()
 
   sSystem->GeoEnd(GeoHandle);
   sSystem->GeoDraw(GeoHandle);
+#endif
 }
 
 /****************************************************************************/
 /****************************************************************************/
 
+#endif

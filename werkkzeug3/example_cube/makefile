@@ -10,5 +10,4 @@ clean:
 		xcodebuild -configuration Release clean -project example_cube.xcodeproj
 
 tags:
-		cd ..
-		ctags -R
+		ctags -R ..
