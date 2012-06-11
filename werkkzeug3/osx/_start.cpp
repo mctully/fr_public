@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
+#include "_start.hpp"
+#include "osx/osx_common.h"
+
+sSystem_ *sSystem=NULL;
+sBroker_ *sBroker=NULL;
 
 static void initAttributes ()
 {
@@ -86,12 +91,253 @@ int main(int argc, char *argv[])
 	// Get GL context attributes
 	printAttributes ();
 
-	// TODO app init
-	// TODO app mainloop
-	// TODO app shutdown
-	//
+	sSystem=new sSystem_;
+
+  // config
+  if(sAppHandler(sAPPCODE_CONFIG,0))
+    sSystem->InitX();
+
+	delete sSystem;
 
 	SDL_Quit();
 
+	// PC version prints memory leaks here
+
 	return 0;
+}
+
+static void MakeCpuMask()
+{
+	sSystem->CpuMask=0;
+}
+
+sU32 sSystem_::PerfTime()
+{
+	MACTODO;
+	return 0;	// TODO return some sort of precise timer value
+}
+
+void sSystem_::PerfKalib()
+{
+	MACTODO;
+	// TODO - feedback loop to calibrate PerfTime
+}
+
+void sSystem_::InitScreens()
+{
+	// init SDL + GL
+
+	// create dummy texture
+	sU16 bmp[4*4*4];
+	sSetMem(bmp,0,sizeof(bmp));
+	AddTexture(4,4,sTF_A8R8G8B8,bmp,1);
+
+	// TODO initialize gpumask
+	// if(caps.StencilCaps & D3DSTENCILCAPS_TWOSIDED) GpuMask |= sGPU_TWOSIDESTENCIL;
+
+#ifdef _DOPE
+	BufferMemAlloc = 0;
+#endif
+
+	ReCreateZBuffer();
+	SyncQuery = 0;
+	MACTODO;
+	// /*DXERROR*/(DXDev->CreateQuery(D3DQUERYTYPE_EVENT,&SyncQuery));  // allow this to fail
+
+	CreateGeoBuffer(0,1,0,MAX_DYNVBSIZE);
+	CreateGeoBuffer(1,1,1,MAX_DYNIBSIZE);
+	CreateGeoBuffer(2,1,2,MAX_DYNIBSIZE*2);
+	CreateGeoBuffer(3,0,1,2*0x8000/4*6);
+	MACTODO;
+	/*
+		DXERROR(GeoBuffer[3].IB->Lock(0,2*0x8000/4*6,(void **) &iblock,0));
+		for(i=0;i<0x8000/6;i++)
+		sQuad(iblock,i*4+0,i*4+1,i*4+2,i*4+3);
+		DXERROR(GeoBuffer[3].IB->Unlock());
+
+		HardwareShaderLevel = sPS_00;
+		if((caps.PixelShaderVersion&0xffff)!=0x0000)
+		{
+		MakeCubeNormalizer();
+		MakeAttenuationVolume();
+		HardwareShaderLevel = sPS_11;
+		if((caps.PixelShaderVersion&0xffff)>=0x0104)
+		{
+		HardwareShaderLevel = sPS_14;
+		if((caps.PixelShaderVersion&0xffff)>=0x0200)
+		{
+		HardwareShaderLevel = sPS_20;
+		}
+		}
+		}
+	// set some defaults
+	DXDev->SetTextureStageState(0,D3DTSS_COLOROP,D3DTOP_SELECTARG1);
+	DXDev->SetTextureStageState(0,D3DTSS_COLORARG1,D3DTA_TEXTURE);
+	DXDev->SetRenderState(D3DRS_LIGHTING,0);
+
+	for(i=0;i<MAX_TEXTURE;i++)
+	{
+	if(Textures[i].Flags & sTIF_RENDERTARGET)
+	{
+	tex = &Textures[i];
+	DXERROR(DXDev->CreateTexture(tex->XSize,tex->YSize,1,D3DUSAGE_RENDERTARGET,D3DFMT_A8R8G8B8,D3DPOOL_DEFAULT,&tex->Tex,0));
+
+	if(Textures[i].Flags & sTIF_NEEDEXTRAZ)
+	DXERROR(DXDev->CreateDepthStencilSurface(tex->XSize,tex->YSize,D3DFMT_D24S8,D3DMULTISAMPLE_NONE,0,TRUE,&tex->Shadow,0));
+	}
+	}
+
+	DiscardCount[0] = DiscardCount[1] = DiscardCount[2] = 1;
+
+	LastDecl = -1;
+	LastVB = -1;
+	LastVSize = 0;
+	LastIB = -1;
+	MtrlReset = sTRUE;
+	MtrlClearCaches();
+
+	CurrentTarget = -1;
+	NeedFinishBlit = sFALSE;
+	*/
+}
+
+void sSystem_::ReCreateZBuffer()
+{
+	MACTODO;
+}
+
+void sSystem_::InitX()
+{
+  sInt i;
+
+	MakeCpuMask();
+	sInitTypes();
+#if sLINK_RYGDXT
+  sInitDXT();
+#endif
+  sBroker = new sBroker_;
+#if sLINK_UTIL
+  sPerfMon = new sPerfMon_;
+  sBroker->AddRoot(sPerfMon);
+#endif
+
+// init
+
+  WDeviceLost = 0;
+  WActiveCount = 0;
+  WActiveMsg = 1;
+  WContinuous = 1;
+  WSinglestep = 0;
+  WFullscreen = 0;
+  WWindowedStyle = 0;
+  WMinimized = 0;
+  WMaximized = 0;
+  WAborting = sFALSE;
+  WResponse = 0;
+  WConstantUpdate = sTRUE;
+  WAbortKeyFlag = 0;
+  WFocus = 1;
+
+  CmdLowQuality = 0;
+  CmdLowRes = 0;
+  CmdShaderLevel = sPS_20;
+  CmdNoRt = sFALSE;
+
+  CmdWindowed = 0;
+  CmdFullscreen = 0;
+
+	// TODO parse cmd line opts here
+	
+
+  sSetMem(GeoBuffer,0,sizeof(GeoBuffer));
+  sSetMem(GeoHandle,0,sizeof(GeoHandle));
+
+  sSetMem(&PerfThis,0,sizeof(PerfThis));
+  sSetMem(&PerfLast,0,sizeof(PerfLast));
+  PerfThis.Time = sSystem->PerfTime();
+
+#ifdef _DOPE
+  TexMemAlloc = 0;
+#endif
+
+	ZBufXSize = ZBufYSize = 0;
+	ZBufFormat = 0;
+	ZBuffer = 0;
+  RTBuffer = 0;
+  CurrentRT = 0;
+  SyncQuery = 0;
+  
+  for(i=0;i<MAX_TEXTURE;i++)
+    Textures[i].Flags = 0;
+
+  sSetMem(Setups,0,sizeof(Setups));
+  sSetMem(Shaders,0,sizeof(Shaders));
+
+  MtrlClearCaches();
+  InitScreens();
+
+  if(CmdShaderLevel>GetShaderLevel())
+    CmdShaderLevel = GetShaderLevel();
+
+  sAppHandler(sAPPCODE_INIT,0);
+
+	// TODO poll events
+	//
+	SDL_Event event;
+	bool			done=false;
+	while ( !done && SDL_PollEvent (&event) )
+	{
+		switch (event.type)
+		{
+			case SDL_KEYDOWN:
+				if ((event.key.keysym.mod&KMOD_META) && event.key.keysym.sym=='q')
+				{
+					//done=true;
+				}
+				MACTODO;
+				//sAppHandler(sAPPCODE_KEY,KeyBuffer[i]);
+				break;
+			case SDL_QUIT:
+				done=true;
+				break;
+			default:
+				break;
+		}
+		Render();
+		PerfLast.TimeFiltered = (PerfLast.TimeFiltered*7+PerfLast.Time)/8;
+		PerfLast.Line     = PerfThis.Line;
+		PerfLast.Triangle = PerfThis.Triangle;
+		PerfLast.Vertex   = PerfThis.Vertex;
+		PerfLast.Material = PerfThis.Material;
+		PerfThis.Line     = 0;
+		PerfThis.Triangle = 0;
+		PerfThis.Vertex   = 0;
+		PerfThis.Material = 0;
+#if sLINK_UTIL
+		sPerfMon->Flip();
+#elif !sINTRO
+		sSystem->PerfKalib();
+#endif
+		// TODO framelock
+		SDL_Delay(0);
+	}
+
+  sAppHandler(sAPPCODE_EXIT,0);
+// cleanup
+
+#if sLINK_UTIL
+  sBroker->RemRoot(sPerfMon);
+#endif
+  sBroker->Free();      // some objects may still hold resources, like Geometries
+  sBroker->Dump();
+  ExitScreens();
+
+  for(i=0;i<MAX_TEXTURE;i++)
+    Textures[i].Flags=0;
+  sExitTypes();
+
+  sBroker->Free();			// MT : PC code called this twice - is this intended?
+  sBroker->Dump();
+  delete sBroker;
+  sBroker = 0;
 }

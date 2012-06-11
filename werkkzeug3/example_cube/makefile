@@ -10,4 +10,6 @@ clean:
 		xcodebuild -configuration Release clean -project example_cube.xcodeproj
 
 tags:
-		ctags -R ..
+		ctags -R .. \
+		--c-kinds=+px \
+		/Library/Frameworks/SDL.framework/Versions/A/Headers \

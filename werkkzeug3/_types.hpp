@@ -47,9 +47,16 @@
 #define sPLATFORM     sPLAT_PC
 #endif
 
+#if sPLATFORM==sPLAT_MAC
+#undef sLINK_RYGDXT
+#define sLINK_RYGDXT 	0	// TODO!
+#undef sLINK_UTIL
+#define sLINK_UTIL		0	// TODO!
+#endif
+
 #if __GNUC__
 // MT: might be nicer to change these to sINLINE and sCDECL as done in altona/types.hpp
-#define __forceinline __attribute__((always_inline))
+#define __forceinline __attribute__((always_inline)) inline
 #define __cdecl
 #endif
 

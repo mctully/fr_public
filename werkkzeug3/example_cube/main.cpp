@@ -7,11 +7,8 @@
 #include "material11.hpp"
 
 #if sPLATFORM==sPLAT_MAC
-#include <stdio.h>			// give me printf!
-#define MAC 1
+#include "osx/osx_common.h"
 #endif
-
-#define MACTODO		printf("TODO %s %s:%d\n",__PRETTY_FUNCTION__,__FILE__,__LINE__)
 
 /****************************************************************************/
 /***                                                                      ***/
