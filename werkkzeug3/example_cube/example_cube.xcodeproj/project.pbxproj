@@ -19,8 +19,8 @@
 		4D2816721574261800CC7B46 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
 		4D2816A215742AAE00CC7B46 /* app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D2816A415742AAE00CC7B46 /* app-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "app-Info.plist"; sourceTree = "<group>"; };
-		4DF30AB915855B15001E754D /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
-		4DF30ABA15855B15001E754D /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
+		4DF30AB915855B15001E754D /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDLMain.h; path = ../osx/SDLMain.h; sourceTree = "<group>"; };
+		4DF30ABA15855B15001E754D /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDLMain.m; path = ../osx/SDLMain.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,7 +40,6 @@
 			children = (
 				4D2816741574261E00CC7B46 /* Frameworks */,
 				08FB7795FE84155DC02AAC07 /* Source */,
-				C6859E8C029090F304C91782 /* Documentation */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
 				4D2816A415742AAE00CC7B46 /* app-Info.plist */,
 			);
@@ -50,10 +49,7 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				4DF30AB915855B15001E754D /* SDLMain.h */,
-				4DF30ABA15855B15001E754D /* SDLMain.m */,
-				4D281625157424F700CC7B46 /* _start.cpp */,
-				08FB7796FE84155DC02AAC07 /* main.cpp */,
+				4DF30AD7158686CF001E754D /* werkkzeug3 */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -74,11 +70,32 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C6859E8C029090F304C91782 /* Documentation */ = {
+		4DF30AD6158686BF001E754D /* example_cube */ = {
 			isa = PBXGroup;
 			children = (
+				4DF30AB915855B15001E754D /* SDLMain.h */,
+				4DF30ABA15855B15001E754D /* SDLMain.m */,
+				08FB7796FE84155DC02AAC07 /* main.cpp */,
 			);
-			name = Documentation;
+			path = example_cube;
+			sourceTree = "<group>";
+		};
+		4DF30AD7158686CF001E754D /* werkkzeug3 */ = {
+			isa = PBXGroup;
+			children = (
+				4DF30AD6158686BF001E754D /* example_cube */,
+				4DF30AD8158686D8001E754D /* osx */,
+			);
+			name = werkkzeug3;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		4DF30AD8158686D8001E754D /* osx */ = {
+			isa = PBXGroup;
+			children = (
+				4D281625157424F700CC7B46 /* _start.cpp */,
+			);
+			path = osx;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
