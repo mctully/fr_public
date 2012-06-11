@@ -341,3 +341,16 @@ void sSystem_::InitX()
   delete sBroker;
   sBroker = 0;
 }
+
+void sSystem_::MtrlClearCaches()
+{
+  CurrentSetupId = sINVALID;
+  CurrentVS = 0;
+  CurrentPS = 0;
+
+  for(sInt i=0;i<MAX_TEXSTAGE;i++)
+    CurrentTextures[i] = sINVALID;
+
+  for(sInt i=0;i<0x310;i++)
+    CurrentStates[i] = 0xfefefefe; // let's hope we never actually want this value
+}

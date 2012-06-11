@@ -611,6 +611,11 @@ __forceinline sInt sDivShift30(sInt var_a,sInt var_b)
   return (sS32)( (((sS64)var_a)<<30)/((sS64)var_b) );
 }
 
+__forceinline sInt sFtol (const float f)
+{
+	return (sInt)f;
+}
+
 #if !sMOBILE
 sBool sNormalFloat(sF32 value);
 #endif

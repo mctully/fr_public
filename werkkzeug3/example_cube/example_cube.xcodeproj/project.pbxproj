@@ -11,6 +11,7 @@
 		4D2816A915742ABF00CC7B46 /* _start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D281625157424F700CC7B46 /* _start.cpp */; };
 		4D2816AA15742AC000CC7B46 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; };
 		4DF30AC615855B31001E754D /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF30ABA15855B15001E754D /* SDLMain.m */; };
+		4DF30AE015868797001E754D /* _types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DF30ADF15868797001E754D /* _types.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		4D2816A415742AAE00CC7B46 /* app-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "app-Info.plist"; sourceTree = "<group>"; };
 		4DF30AB915855B15001E754D /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDLMain.h; path = ../osx/SDLMain.h; sourceTree = "<group>"; };
 		4DF30ABA15855B15001E754D /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDLMain.m; path = ../osx/SDLMain.m; sourceTree = "<group>"; };
+		4DF30ADF15868797001E754D /* _types.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _types.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 		4DF30AD7158686CF001E754D /* werkkzeug3 */ = {
 			isa = PBXGroup;
 			children = (
+				4DF30ADF15868797001E754D /* _types.cpp */,
 				4DF30AD6158686BF001E754D /* example_cube */,
 				4DF30AD8158686D8001E754D /* osx */,
 			);
@@ -160,6 +163,7 @@
 				4D2816A915742ABF00CC7B46 /* _start.cpp in Sources */,
 				4D2816AA15742AC000CC7B46 /* main.cpp in Sources */,
 				4DF30AC615855B31001E754D /* SDLMain.m in Sources */,
+				4DF30AE015868797001E754D /* _types.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

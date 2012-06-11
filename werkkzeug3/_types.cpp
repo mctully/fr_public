@@ -5,7 +5,11 @@
 #include "_start.hpp"
 #endif
 #include <stdarg.h>
+#if sPLATFORM==sPLAT_MAC
+#include "osx/malloc_compat.h"
+#else
 #include <malloc.h>
+#endif
 #if sLINK_INTMATH
 #include "_intmath.hpp"
 #endif
@@ -2013,6 +2017,28 @@ void sVerifyFalse(const sChar *file,sInt line)
 #endif
 }
 
+#if sPLATFORM==sPLAT_MAC
+
+#include <stdio.h>
+
+void sFatal(const sChar *inFormat, ...)
+{
+	static char s_buffer[1024];
+	va_list			args;
+
+	va_start(args,inFormat);
+	
+	vsnprintf(s_buffer,sizeof(s_buffer),inFormat,args);
+	s_buffer[sizeof(s_buffer)-1]=0;
+	
+	va_end(args);
+
+	printf("%s",s_buffer);
+	sSystem->Abort(s_buffer);
+}
+
+#else
+
 #if !sINTRO || !sRELEASE
 
 extern sInt sFatality;
@@ -2049,6 +2075,8 @@ void __cdecl sFatal(sChar *format,...)
   va_end(arg);
   sSystem->Abort(buffer);
 }
+
+#endif
 
 #endif
 
@@ -2258,6 +2286,7 @@ sU32 sRandom::Int32()
   return r1|r0;
 }
 
+#if sPLATFORM==sPLAT_PC
 static sInt CutRange(sU32 value,sInt max)
 {
   sInt x;
@@ -2278,6 +2307,7 @@ sInt sRandom::Int(sInt max)
     return CutRange(Int32(),max);
     //return sInt((sU64(Int32())*max)>>32);
 }
+#endif
 
 sF32 sRandom::Float(sF32 max)
 {
@@ -2591,6 +2621,8 @@ void sMatrix::InitDir(const sVector &v)
 
 /****************************************************************************/
 
+#if sPLATFORM==sPLAT_PC
+
 #define ALIGN4_INIT1( X, INIT )	 static __declspec(align(16)) X[4] = { INIT, INIT, INIT, INIT }
 
 ALIGN4_INIT1(sU32 SIMD_SP_signBitMask, (1U<<31));
@@ -2714,6 +2746,9 @@ void sMatrix::InitEuler(sF32 _a,sF32 _b,sF32 _c)
   l.Init4(0,0,0,1);
 }
 //#endif
+
+#endif
+
 
 void sMatrix::InitEulerPI2(const sF32 *a)
 {
@@ -3038,6 +3073,7 @@ void sMatrix::MulA(const sMatrix &a,const sMatrix &b)
 /****************************************************************************/
 /****************************************************************************/
 
+#if sPLATFORM==sPLAT_PC
 void sQuaternion::InitAxisAngle(const sVector &axis,sF32 angle)
 {
   sF32 s,c;
@@ -3050,6 +3086,7 @@ void sQuaternion::InitAxisAngle(const sVector &axis,sF32 angle)
   y = s * axis.y;
   z = s * axis.z;
 }
+#endif
 
 void sQuaternion::Lin(const sQuaternion &a,const sQuaternion &b,sF32 t)
 {
